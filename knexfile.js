@@ -13,7 +13,7 @@ module.exports = {
     seeds: {
       directory: './data/seeds'
     },
-    userNullAsDefault: true
+    useNullAsDefault: true
   },
 
   testing: {
@@ -27,8 +27,8 @@ module.exports = {
     seeds: {
       directory: './data/seeds'
     },
-    userNullAsDefault: true
-  }
+    useNullAsDefault: true
+  },
 
   staging: {
     client: 'postgresql',
