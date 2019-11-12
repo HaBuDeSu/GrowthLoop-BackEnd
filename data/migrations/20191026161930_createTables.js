@@ -3,7 +3,7 @@ exports.up = function(knex) {
     return knex.schema
         .createTable("accounts", tbl => {
             tbl.increments();
-            tbl.string("account_name").notNullable();
+            tbl.string("name").notNullable();
         })
         .createTable("users", tbl => {
             tbl.increments();
@@ -14,25 +14,39 @@ exports.up = function(knex) {
         })
         .createTable("funnels", tbl => {
             tbl.increments();
+            tbl.string('name');
+        })
+        .createTable("account_funnels", tbl => {
+            tbl.increments();
+            tbl.integer('funnel_id').unsigned();
+            tbl.foreign('funnel_id').references('id').inTable('funnels').onDelete("CASCADE");
             tbl.integer('account_id').unsigned();
             tbl.foreign('account_id').references('id').inTable('accounts').onDelete("CASCADE");
             tbl.integer('owner');
             tbl.foreign('owner').references('id').inTable('users').onDelete("CASCADE");
-            tbl.string('funnel_name');
+            tbl.string('name');
         })
         .createTable("steps", tbl => {
             tbl.increments();
             tbl.integer("funnel_id").unsigned();
             tbl.foreign("funnel_id").references("id").inTable("funnels").onDelete("CASCADE");
-            tbl.string("step_name");
-
+            tbl.string("name");
         })
         .createTable("conversions", tbl => {
             tbl.increments();
+            tbl.integer("step_id").unsigned();
+            tbl.foreign("step_id").references("id").inTable("steps").onDelete("CASCADE");
+            tbl.string("name");
         })
         .createTable("experiments", tbl => {
             tbl.increments();
-            tbl.integer('')
+            tbl.integer("step_id").unsigned();
+            tbl.integer("owner").unsigned();
+            tbl.foreign('owner').references('id').inTable('users').onDelete("CASCADE");
+            tbl.string("goal_type").notNullable();
+            tbl.decimal("goal_value").notNullable();
+            tbl.decimal("trials");
+            tbl.decimal("successes");
         })
 };
 
