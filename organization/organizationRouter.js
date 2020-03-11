@@ -6,7 +6,7 @@ router.post("/", async (req, res) => {
     const org = req.body
     try {
         const orgId = await Org.addOrg(org)
-        res.status(201).json({message: "Added New Organization", org: orgId[0]})
+        res.status(201).json({message: "Added New Organization", test: "test", orgId: orgId})
     }
     catch(error) {
         console.log(error)
