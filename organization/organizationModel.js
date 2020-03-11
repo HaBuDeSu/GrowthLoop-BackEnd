@@ -1,7 +1,7 @@
 const db = require("../data/dbConfig.js");
 
 const addOrg = async org => {
-    return await db("organizations").insert(org)
+    return await db("organizations").insert(org).returning('*')
 }
 
 const updateOrg = async (orgId, info) => {
