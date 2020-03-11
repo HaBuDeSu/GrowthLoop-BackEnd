@@ -5,8 +5,8 @@ const Org = require("./organizationModel");
 router.post("/", async (req, res) => {
     const org = req.body
     try {
-        const orgId = await Org.addOrg(org)
-        res.status(201).json({message: "Added New Org", org: orgId[0]})
+        const newOrg = await Org.addOrg(org)
+        res.status(201).json({message: "Added New Organization", orgId: newOrg[0].id})
     }
     catch(error) {
         console.log(error)
