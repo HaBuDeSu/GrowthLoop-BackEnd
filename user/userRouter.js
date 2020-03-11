@@ -5,20 +5,33 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
-    const user = req.body
+    let newUser = req.body
+    const password = req.body.password
+    const {email} = req.body
+    newUser.password = bcrypt.hashSync(password, 10)
     try {
-        await User.addUser(user)
-        res.status(201).json({message: "Added New User", user: user})
+        const user = await User.getUserBy({email})
+        if(user) {
+            res.status(400).json({message: "Email Already Exists"})
+        } else {
+            try {
+                await User.addUser(newUser)
+                res.status(200).json({message: "User Created"})
+            }
+            catch(error) {
+                res.status(500).json({message: "Could Not Register User", error: error})
+            }
+        }
     }
-    catch(error) {
+    catch {
         res.status(500).json({message: "Could Not Register User", error: error})
     }
 })
 
 router.post("/login", async (req, res) => {
-    let {username, password} = req.body
+    let {email, password} = req.body
     try {
-        const user = await User.getUserBy({username})
+        const user = await User.getUserBy({email})
         if(user && bcrypt.compareSync(password, user.password)) {
             const token = genToken(user)
             res.status(200).json({
@@ -34,7 +47,18 @@ router.post("/login", async (req, res) => {
     }
 })
 
-router.put("/users/:userId", async (req, res) => {
+router.get("/:id", async (req, res) => {
+    let {id} = req.params
+    try {
+        const user = await User.getUserBy({id})
+        res.status(200).json({user: user})
+    }
+    catch(error) {
+        res.status(500).json({message: "Could Not Get User"})
+    }
+})
+
+router.put("/:userId", async (req, res) => {
     const {userId} = req.params
     const user = req.body
     try {
@@ -46,7 +70,7 @@ router.put("/users/:userId", async (req, res) => {
     }
 })
 
-router.delete("/users/:userId", async (req, res) => {
+router.delete("/:userId", async (req, res) => {
     const {userId} = req.params
     try {
         await User.deleteUser(userId)
