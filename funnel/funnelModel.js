@@ -8,7 +8,12 @@ const getFunnelBy = async filter => {
     return await db("funnels").where(filter)
 }
 
+const updateFunnel = async (id, info) => {
+    return await db("funnels").where({id}).update(info)
+}
+
 module.exports = {
     addFunnel,
-    getFunnelBy
+    getFunnelBy,
+    updateFunnel
 }
