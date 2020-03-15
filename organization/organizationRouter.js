@@ -9,7 +9,6 @@ router.post("/", async (req, res) => {
         res.status(201).json({message: "Added New Organization", orgId: newOrg[0].id})
     }
     catch(error) {
-        console.log(error)
         res.status(500).json({message: "Could Not Create Org", error: error})
     }
 })

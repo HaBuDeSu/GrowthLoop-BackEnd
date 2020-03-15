@@ -5,7 +5,7 @@ const addFunnel = async funnel => {
 }
 
 const getFunnelBy = async filter => {
-    return await db("funnels").where(filter).first()
+    return await db("funnels").where(filter)
 }
 
 module.exports = {
