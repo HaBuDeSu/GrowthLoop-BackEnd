@@ -9,7 +9,7 @@ const updateOrg = async (orgId, info) => {
 }
 
 const getOrgBy = async filter => {
-    return await db("organizations").where(filter).first()
+    return await db("organizations").where(filter)
 }
 
 const deleteOrg = async orgId => {
