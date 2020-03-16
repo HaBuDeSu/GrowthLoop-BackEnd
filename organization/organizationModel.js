@@ -4,12 +4,12 @@ const addOrg = async org => {
     return await db("organizations").insert(org).returning('*')
 }
 
-const updateOrg = async (orgId, info) => {
-    return await db("organizations")
+const updateOrg = async (id, info) => {
+    return await db("organizations").where({id}).update(info)
 }
 
 const getOrgBy = async filter => {
-    return await db("organizations").where(filter).first()
+    return await db("organizations").where(filter)
 }
 
 const deleteOrg = async orgId => {
