@@ -24,14 +24,26 @@ router.get("/:id", async (req, res) => {
     }
 })
 
-router.get("/:organization_id", async (req, res) => {
-    const {organiztion_id} = req.params
+router.get("/org/:organization_id", async (req, res) => {
+    const {organization_id} = req.params
     try {
-        const funnelList = await Funnel.getFunnelBy({organiztion_id})
+        const funnelList = await Funnel.getFunnelBy({organization_id})
         res.status(200).json({message: "Got Funnels", funnelList: funnelList})
     }
     catch(error) {
         res.status(500).json({message: "Could Not Get Funnels", error: error})
+    }
+})
+
+router.put("/:id", async (req, res) => {
+    const info = req.body
+    const {id} = req.params
+    try {
+        await Funnel.updateFunnel(id, info)
+        res.status(201).json({message: "Updated Funnel"})
+    }
+    catch(error) {
+        res.status(500).json({message: "Could Not Update Funnel", error: error})
     }
 })
 
